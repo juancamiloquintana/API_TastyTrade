@@ -31,3 +31,11 @@ async def login():
     )
 
     return RedirectResponse(authorization_url)
+
+
+from app.services.auth_service import auth_service
+
+@router.get("/token")
+async def get_token():
+
+    return await auth_service.refresh_access_token()

@@ -17,7 +17,6 @@ class TokenManager:
 
     @staticmethod
     def load():
-
         if not TOKEN_FILE.exists():
             return None
 
@@ -26,11 +25,18 @@ class TokenManager:
 
     @staticmethod
     def clear():
-
         if TOKEN_FILE.exists():
             TOKEN_FILE.unlink()
 
     @staticmethod
     def has_token():
-
         return TOKEN_FILE.exists()
+
+    @staticmethod
+    def get_access_token():
+        token = TokenManager.load()
+
+        if not token:
+            return None
+
+        return token.get("access_token")
