@@ -1,33 +1,30 @@
 from fastapi import FastAPI
+
 from app.config import settings
+from app.auth.oauth import router as auth_router
 
 app = FastAPI(
     title="TastyTrade Pro",
     version="1.0.0"
 )
 
+app.include_router(auth_router)
+
+
 @app.get("/")
 def home():
+
     return {
         "application": "TastyTrade Pro",
         "client_id": settings.CLIENT_ID,
         "environment": settings.ENVIRONMENT
     }
 
-from app.auth.token_manager import save_tokens
-from app.auth.token_manager import load_tokens
-
-
-@app.get("/test-token")
-def test_token():
-
-    save_tokens(
-        {
-            "access_token": "ABC123",
-            "refresh_token": "XYZ789"
-        }
-    )
-
-    return load_tokens()
-
-
+@app.get("/config")
+def config():
+    return {
+        "client_id": settings.CLIENT_ID,
+        "has_client_secret": settings.CLIENT_SECRET is not None,
+        "has_refresh_token": settings.REFRESH_TOKEN is not None,
+        "environment": settings.ENVIRONMENT,
+    }

@@ -1,17 +1,36 @@
-import json
 from pathlib import Path
+import json
 
-TOKEN_FILE = Path("tokens.json")
+# backend/storage/tokens.json
+STORAGE_DIR = Path(__file__).resolve().parent.parent.parent / "storage"
+STORAGE_DIR.mkdir(exist_ok=True)
+
+TOKEN_FILE = STORAGE_DIR / "tokens.json"
 
 
-def save_tokens(tokens: dict):
-    with open(TOKEN_FILE, "w") as file:
-        json.dump(tokens, file, indent=4)
+class TokenManager:
 
+    @staticmethod
+    def save(tokens: dict):
+        with open(TOKEN_FILE, "w", encoding="utf-8") as file:
+            json.dump(tokens, file, indent=4)
 
-def load_tokens():
-    if TOKEN_FILE.exists():
-        with open(TOKEN_FILE, "r") as file:
+    @staticmethod
+    def load():
+
+        if not TOKEN_FILE.exists():
+            return None
+
+        with open(TOKEN_FILE, "r", encoding="utf-8") as file:
             return json.load(file)
 
-    return None
+    @staticmethod
+    def clear():
+
+        if TOKEN_FILE.exists():
+            TOKEN_FILE.unlink()
+
+    @staticmethod
+    def has_token():
+
+        return TOKEN_FILE.exists()
