@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from app.config import settings
 from app.auth.oauth import router as auth_router
 from app.api.accounts import router as accounts_router
+from app.api.balances import router as balances_router
+from app.api.positions import router as positions_router
 
 app = FastAPI(
     title="TastyTrade Pro",
@@ -11,6 +13,8 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(accounts_router)
+app.include_router(balances_router)
+app.include_router(positions_router)
 
 
 @app.get("/")

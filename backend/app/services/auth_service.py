@@ -11,10 +11,14 @@ class AuthService:
             f"{settings.API_URL}/oauth/token",
             json={
                 "grant_type": "refresh_token",
+                "client_id": settings.CLIENT_ID,
                 "client_secret": settings.CLIENT_SECRET,
                 "refresh_token": settings.REFRESH_TOKEN,
             },
         )
+
+        print("STATUS:", response.status_code)
+        print("BODY:", response.text)
 
         response.raise_for_status()
 
